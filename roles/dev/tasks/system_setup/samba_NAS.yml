@@ -1,0 +1,47 @@
+- name: system_setup | samba | install samba package
+  tags: system_setup,samba,packages
+  package:
+    name: 
+      - samba
+      - cifs-utils
+    state: latest
+  notify:
+    - restart_samba
+
+- name: system_setup | samba | create mount point
+  tags: samba,mount,system_setup
+  file:
+    path: "{{ item.dir}}"
+    state: directory
+    owner: medvidec
+    group: medvidec
+    mode: 0700
+  with_items:
+    - { dir: '/mnt/data'}
+
+- name: system_setup | samba | mount smb on /mnt
+  tags: samba,mount,system_setup
+
+
+
+  #- name: system_setup | samba | make mountpoint immutable
+  #  tags: samba,mount,system_setup
+  #command: "chattr +i /mnt/data"
+
+      #- name: system_setup | samba | Mount ephemeral SMB volume
+      #  tags: samba,mount,system_setup
+      #  ansible.posix.mount:
+      #    src: //10.1.100.32/M-dev
+      #    path: /mnt/data
+#    opts: "rw,vers=3,file_mode=0600,dir_mode=0700,username= dev ,password={{ smbpasswd }}"
+#    fstype: cifs
+#    state: mounted
+
+- name: system_setup | samba | link /mnt/data to homedirectory
+  tags: samba,mount,system_setup
+  ansible.builtin.file:
+    src: /mkt/data/
+    dest: /home/medvidec/data/
+    owner: medvidec
+    group: medvidec
+    state: link

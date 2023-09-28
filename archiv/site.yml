@@ -1,0 +1,42 @@
+---
+
+#### pretasks ####
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: update repo cache (CentOS)
+    tags: always
+    dnf:
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "CentOS"
+
+  - name: update repo cache (Ubuntu)
+    tags: always
+    apt:
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "Ubuntu"
+
+  
+  - name: install git
+    tags: git,base
+    package:
+      name: git
+      state: latest
+
+
+####  Roles ####
+
+
+- hosts: all
+  become: true
+  roles:
+    - base
+
+- hosts: dev_server
+  become: true
+  roles:
+    - dev_server

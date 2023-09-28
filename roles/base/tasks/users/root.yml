@@ -1,0 +1,12 @@
+- name: users | root | ensure account is locked
+  user:
+    name: root
+    password_lock: yes
+
+- name: users | root | create group
+  tags: groups,root,users
+  group:
+    name: ansible
+    state: present
+
+

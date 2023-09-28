@@ -1,0 +1,15 @@
+- include_vars: "{{ansible_distribution }}.yml"
+  tags: always
+
+- block:
+  ##  System Setup
+  - import_tasks: system_setup/qemu-agent.yml
+    #  - import_tasks: system_setup/samba_NAS.yml
+  - import_tasks: system_setup/filesystem.yml
+ 
+  ##  Software 
+  - import_tasks: software/neovim2.yml
+  #  - import_tasks: software/git.yml
+  #  - import_tasks: software/obsidian.yml
+  - import_tasks: software/tmux.yml
+

@@ -1,0 +1,12 @@
+
+- name: dev | obsidian | create folder
+  tags: obsidian,folder
+  file:
+    path: "{{ item.dir}}"
+    state: directory
+    owner: medvidec
+    group: medvidec
+    mode: 0700
+  with_items:
+    - { dir: '/home/medvidec/obsidian 
+

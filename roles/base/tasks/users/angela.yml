@@ -1,0 +1,29 @@
+- name: users | angela | create group
+  tags: groups,angela,users
+  group:
+    name: angela
+    state: present
+
+- name: users | angela | create user
+  tags: angela,sudo,users
+  user:
+    name: angela
+    group: angela
+    groups: root
+
+- name: users | angela | add public key
+  tags: dotfiles,angela,ssh,ssh-keys,users
+  authorized_key:
+    user: angela
+    key: "{{ item }}"
+  with_file:
+    - users/angela/angela_ed25519.pub
+
+- name: users | angela | add sudoers file
+  tags: settings,angela,sudo,system,users
+  copy:
+    src: users/angela/sudoer_angela
+    dest: /etc/sudoers.d/angela
+    owner: root
+    group: root
+    mode: 0440

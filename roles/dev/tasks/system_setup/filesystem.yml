@@ -1,0 +1,13 @@
+- name: system_setup | directories | create working directories
+  tags: dev,dir
+  file:
+    path: /home/medvidec/{{ item.dir }}
+    state: directory
+    owner: medvidec
+    group: medvidec
+    mode: 0700
+  with_items:
+    - { dir: 'git' }
+   
+
+

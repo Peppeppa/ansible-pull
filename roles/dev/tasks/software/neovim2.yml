@@ -1,0 +1,39 @@
+- name: software | nvim | download nvim appimage
+  tags: nvim,packages,setup
+  ansible.builtin.get_url:
+    url:  https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
+    dest: /home/angela/nvim.appimage
+    mode: 0440
+
+- name: software | nvim | install fuse
+  tags: nvim,packages,setup
+  package: 
+    name:
+      - fuse
+    state: latest
+
+- name: software | nvim | chmod nvim.appimage
+  tags: nvim,packages,setup
+  command: chmod u+x /home/angela/nvim.appimage
+
+- name: software | nvim | copy to /usr/bin
+  tags: nvim,packages,setup
+  copy:
+    src: /home/angela/nvim.appimage
+    dest: /usr/bin/nvim
+    owner: medvidec
+    group: medvidec
+
+- name: software | nvim | lade NvimChad
+  ansible.builtin.git:
+    repo: https://github.com/NvChad/NvChad.git
+    dest: /home/medvidec/.config/nvim
+
+- name: software | nvim | chown nvimchad
+  tags: nvim,software
+  ansible.builtin.file:
+    path: /home/medvidec/.config/nvim/
+    owner: medvidec
+    group: medvidec
+    mode: u=rwX,g=rX,o=rX
+    recurse: yes

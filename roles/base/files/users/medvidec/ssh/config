@@ -1,0 +1,5 @@
+Host github-Dotfiles
+	HostName github.com 
+    AddKeysToAgent yes 
+    PreferredAuthentications publickey 
+    IdentityFile ~/.ssh/github_dotfiles_ed25519

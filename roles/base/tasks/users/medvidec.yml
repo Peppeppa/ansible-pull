@@ -1,0 +1,88 @@
+- name: users | medvidec | create group
+  tags: groups,medvidec,users
+  group:
+    name: medvidec
+    state: present
+
+- name: users | medvidec | create user 
+  tags: medvidec,sudo,users
+  user:
+    name: medvidec
+    group: medvidec
+    groups: "{{ sudo_group }}"
+    state: present
+    comment: "Steff"
+    password: "{{ medvidec_passwd }}"
+    shell: /bin/bash
+
+- name: users | medvidec | add sudoers file
+  tags: medvidec,settings,angela,sudo,system,users
+  copy: 
+    src: users/medvidec/sudoers_medvidec
+    dest: /etc/sudoers.d/medvidec
+    owner: root
+    group: root
+    mode: 0440
+
+- name: users | medvidec | create .ssh directory
+  tags: dotfiles,medvidec,ssh,users
+  file:
+    path: "{{ item.dir}}"
+    state: directory
+    owner: medvidec
+    group: medvidec
+    mode: 0700
+  with_items:
+    - { dir: '/home/medvidec/.ssh'}
+
+- name: users | medvidec | add ssh key 
+  tags: dotfiles,medvidec,ssh,ssh-keys,users
+  authorized_key:
+    user: medvidec
+    key: "{{ item }}"
+  with_file:
+    - users/medvidec/ssh/medvidec_default_ed25519.pub 
+
+# Hier werden die Ordner für die dotfiles erstellt
+
+- name: users | medvidec | create config directories
+  tags: dotfiles,medvidec,tmux,users,nvim
+  file:
+    path: /home/medvidec/{{ item.dir }}
+    state: directory
+    owner: medvidec
+    group: medvidec
+    mode: 0700
+  with_items:
+    - { dir: '.bash' }
+    - { dir: '.config' }
+    - { dir: '.tmux' }  
+    - { dir: '.tmux/config' }  
+    - { dir: '.config/alacritty' }  
+    - { dir: '.config/nvim' }  
+    - { dir: '.dotfiles' }
+
+- name: users | medvidec | copy dotfiles ssh-key 
+  tags: dotfiles,medvidec,users
+  copy: 
+    src: users/medvidec/ssh/dotfiles_medvidec
+    dest: /home/medvidec/.ssh/github_dotfiles_ed25519
+    owner: medvidec
+    group: medvidec
+    mode: 0440
+    
+- name: users | medvidec | copy ssh-config
+  tags: dotfiles,medvidec,users,ssh
+  copy: 
+    src: users/medvidec/ssh/config
+    dest: /home/medvidec/.ssh/config
+    owner: medvidec
+    group: medvidec
+    mode: 0440
+
+      #- name: users | medvidec | clone dotfiles repo
+      # tags: dotfiles,medvidec,users
+      #  git: 
+      #repo: https://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@github.com/Peppeppa/Dotfiles.git
+      #dest: /home/medvidec/.dotfiles 
+    

@@ -1,0 +1,45 @@
+---
+
+#### bootstrap ####
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: install updates (CentOS)
+    tags: always
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+  - name: install updates (Ubuntu)
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: all
+  become: true
+  tasks:
+    - name: create user angela
+      tags: always
+      user:
+        name: angela
+        groups: root
+
+    - name: add ssh key for angela
+      tags: always
+      authorized_key:
+        user: angela
+        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP5UGk7oN/C++hECmw+6BGhZUs+dAobqRsX5QukENUph ansible"
+
+    - name: add sudoers file for angela
+      tags: always
+      copy:
+        src: sudoer_angela
+        dest: /etc/sudoers.d/angela
+        owner: root
+        group: root
+        mode: 0440

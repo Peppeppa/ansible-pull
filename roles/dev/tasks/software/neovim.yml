@@ -1,0 +1,50 @@
+- name: software | nvim | download nvim appimage
+  tags: nvim,packages,setup
+  ansible.builtin.get_url:
+    url:  https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
+    dest: /home/angela/nvim-linux64.tar.gz
+    mode: 0440
+
+- name: software | nvim | install fuse
+  tags: nvim,packages,setup
+  package: 
+    name:
+      - fuse
+    state: latest
+
+- name: software | nvim | extract tarball
+  tags: nvim,software
+  ansible.builtin.unarchive:
+    src: /home/angela/nvim-linux64.tar.gz
+    dest: /usr/bin/
+    remote_src: yes
+
+- name: software | nvim | create symlink in /usr/bin/
+  tags: nvim,software
+  ansible.builtin.file:
+    src: /usr/bin/nvim-linux64/bin/nvim
+    dest: /usr/bin/nvim
+    owner: medvidec
+    group: medvidec
+    state: link
+
+- name: software | nvim | cleanup
+  tags: nvim,software
+  ansible.builtin.file:
+    path: /home/angela/nvim-linux64.tar.gz
+    state: absent
+
+- name: software | nvim | git clone nvchad
+  tags: nvim,software
+  ansible.builtin.git:
+    repo: https://github.com/NvChad/NvChad.git
+    dest: /home/medvidec/.config/nvim
+
+- name: software | nvim | chown nvimchad
+  tags: nvim,software
+  ansible.builtin.file:
+    path: /home/medvidec/.config/nvim/
+    owner: medvidec
+    group: medvidec
+    mode: u=rwX,g=rX,o=rX
+    recurse: yes

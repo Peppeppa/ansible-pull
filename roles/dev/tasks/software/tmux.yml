@@ -1,0 +1,6 @@
+- name: software | tmux | install package 
+  tags: dev,software,setup
+  package:
+    name:
+      - tmux
+    state: latest

@@ -1,5 +1,4 @@
-- hosts: all
-  connection: localhost
+- hosts: dev
   become: true
   
   pre_tasks:

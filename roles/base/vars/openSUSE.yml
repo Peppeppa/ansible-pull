@@ -1,0 +1,8 @@
+openssh_package: openssh-server
+firewall_package: firewalld
+package_manager: zypper
+update_command: "zypper refresh && zypper update -y"
+openssh_service: ssh
+cron_package: cronie
+sudo_group: wheel
+nfs_client_package: nfs-utils

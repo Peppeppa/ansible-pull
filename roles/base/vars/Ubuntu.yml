@@ -1,0 +1,8 @@
+openssh_package: openssh-server
+firewall_package: ufw
+package_manager: apt
+update_command: "apt update && apt upgrade -y"
+openssh_service: ssh
+cron_package: cron
+sudo_group: sudo
+nfs_client_package: nfs-common

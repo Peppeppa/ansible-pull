@@ -7,3 +7,5 @@ CRON_PACKAGE: cron
 SUDO_GROUP: sudo
 NFS_CLIENT_PACKAGE: nfs-common
 SFTP_PATH: /usr/lib/openssh/sftp-server
+DCONF_PACKAGE: dconf-cli
+PYTHON_PSUTIL_PACKAGE: python3-psutil

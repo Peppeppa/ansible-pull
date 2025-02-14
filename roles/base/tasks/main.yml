@@ -74,7 +74,7 @@
   - import_tasks: system-setup/cron.yml
   - import_tasks: system-setup/locale.yml
   - import_tasks: system-setup/logging.yml
-  - import_tasks: system-setup/openssh.yml
+  - import_tasks: system-setup/ssh.yml
 #-----------------------------------------------------
 #   post_tasks
 #

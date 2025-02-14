@@ -1,0 +1,111 @@
+---
+######################################################
+#
+#     NAME
+#
+######################################################
+# README:
+#
+#
+
+#-----------------------------------------------------
+#   variablen
+#
+#- name: task_name | load variables 
+#  tags: tag1,tag2
+#  set_fact:
+#    var_1: 
+#    var_2: 
+#    var_3: "{{ beispiel_variable }}"
+#    var_4: 
+
+#-----------------------------------------------------
+#   DEBUG
+#
+#- name: task_name | DEBUG - show loaded variables
+#  tags: tag1,tag2,debug
+#  debug:
+#    msg: 
+#      - "{{ var_1 }}"
+#      - "{{ var_2 }}"
+#      - "{{ var_3 }}"
+#      - "{{ var_4 }}"
+
+
+#-----------------------------------------------------
+#   pre_tasks
+#
+
+
+#-----------------------------------------------------
+#   Main
+#
+- name: system setup | utilities | install utility packages
+  tags: software,packages,system,update
+  package:
+    state: latest
+    name:
+      - at
+      - colordiff
+      - curl
+      - htop
+      - iotop
+      - neofetch
+      - net-tools
+      - "{{ NFS_CLIENT_PACKAGE }}"
+      - nmap
+      - ranger
+      - rsync
+      - sshfs
+      - tmux
+      - traceroute
+      - wget
+      - neovim
+      - whois
+      - qemu-guest-agent
+      - cifs-utils
+      - ansible
+      - acl
+      - "{{ CRON_PACKAGE }}"
+      - locales
+      - "{{ DCONF_PACKAGE }}"
+      - "{{ PYTHON_PSUTIL_PACKAGE }}"
+      - "{{ OPENSSH_PACKAGE }}"
+      - sudo
+      - git
+      - vim
+      - stow
+      - fzf
+      - "{{ GITHUB_CLI_PACKAGE }}"
+      - "{{ 7ZIP_PACKAGE }}"
+      - bat
+      - autojump
+      - zip
+
+  register: package_install
+
+- name: system setup | utilities | install man-pages (arch)
+  tags: software,packages,system,settings
+  pacman:
+    state: latest
+    name:
+      - man-db
+      - man-pages
+  when: ansible_distribution == "Archlinux"
+
+
+#-----------------------------------------------------
+#   post_tasks
+#
+
+
+#-----------------------------------------------------
+#   Handlers
+#
+
+
+#-----------------------------------------------------
+#   roles
+#
+
+

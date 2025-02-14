@@ -51,25 +51,47 @@
     state: present
   become_user: true
 
+- name: users | main_user | get username
+  tags: users,main_user,bootstrap
+  ansible.builtin.set_fact:
+    MAIN_USER: "{{ ansible_env.USER }}"
+
 #-----------------------------------------------------
 #   Main
 #
 
-- name: users | main_user | Create user 
-  tags: users,main_user,bootstrap
-  user:
-    name: "{{ MAIN_USER }}"
-    password: "{{ MAIN_USER_PASSWD | password_hash('sha512') }}"
-    comment: "Main User"
-    shell: /bin/bash
-    groups: "{{ SUDO_GROUP }},{{ MAIN_USER }}"
-    create_home: true
-    append: true
-    generate_ssh_key: true
-    ssh_key_type: ed25519
-    ssh_key_comment: "{{ MAIN_USER }}"
-    state: present
+- name: users | main_user | ensure home is present
+  tags: users, main_user, bootstrap
+  ansible.builtin.file:
+    path: "/home/{{ MAIN_USER }}"
+    state: directory
+    owner: "{{ MAIN_USER }}"
+    group: "{{ MAIN_USER }}"
+    mode: '0755'
 
+- name: users | main_user | check SSH-key, create it if needed
+  tags: users, main_user, bootstrap
+  ansible.builtin.command:
+    cmd: "ssh-keygen -t ed25519 -C '{{ MAIN_USER }}' -f /home/{{ MAIN_USER }}/.ssh/id_ed25519 -N ''"
+    creates: "/home/{{ MAIN_USER }}/.ssh/id_ed25519"
+
+- name: users | main_user | permissions for .ssh
+  tags: users, main_user, bootstrap
+  ansible.builtin.file:
+    path: "/home/{{ MAIN_USER }}/.ssh"
+    state: directory
+    owner: "{{ MAIN_USER }}"
+    group: "{{ MAIN_USER }}"
+    mode: '0700'
+
+- name: users | main_user | permissions for sshkey
+  tags: users, main_user, bootstrap
+  ansible.builtin.file:
+    path: "/home/{{ MAIN_USER }}/.ssh/id_ed25519"
+    state: file
+    owner: "{{ MAIN_USER }}"
+    group: "{{ MAIN_USER }}"
+    mode: '0600'
 
 - name: users | main_user | "sudoers.d"
   tags: users,main_user,bootstrap

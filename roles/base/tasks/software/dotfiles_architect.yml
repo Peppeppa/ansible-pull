@@ -1,0 +1,93 @@
+---
+- name: DOTFILES | architect_user | Ensure required packages are installed
+  tags: dotfiles
+  ansible.builtin.package:
+    name:
+      - git
+      - stow
+    state: present
+
+#- name: DOTFILES | architect_user | Ensure git is installed
+#  tags: dotfiles
+  #  ansible.builtin.package:
+    #  name: git
+    #state: present
+
+#- name: DOTFILES | architect_user | Ensure stow is installed
+  #  tags: dotfiles
+  #ansible.builtin.package:
+    #  name: stow
+    #state: present
+
+- name: DOTFILES | architect_user | Create git directory in home folder
+  tags: dotfiles
+  ansible.builtin.file:
+    path: "{{ architect_user_dir }}/git"
+    state: directory
+    mode: '0755'
+    owner: "{{ architect_user }}"
+    group: "{{ architect_user }}"
+
+- name: DOTFILES | architect_user | Clone dotfiles repository
+  tags: dotfiles
+  ansible.builtin.git:
+    repo: 'https://github.com/Peppeppa/dotfiles-stow.git'
+    dest: '{{ architect_user_dir }}/git/dotfiles-stow'
+    update: yes
+
+- name: DOTFILES | architect_user | Setze Besitzer und Gruppe für das geklonte Repository
+  tags: dotfiles
+  file:
+    path: '{{ architect_user_dir }}/git/dotfiles-stow'
+    owner: "{{ architect_user }}"
+    group: "{{ architect_user }}"
+    state: directory
+
+- name: DOTFILES | architect_user | Setze Besitzer und Gruppe für das geklonte Repository
+  tags: dotfiles,configfiles
+  file:
+    path: '{{ architect_user_dir }}/.config'
+    owner: "{{ architect_user }}"
+    group: "{{ architect_user }}"
+    state: directory
+
+
+#- name: Ensure scripts directory exists in home folder
+  #  tags: dotfiles
+  #ansible.builtin.file:
+    #  path: "{{ architect_user_dir }}/scripts"
+    #state: directory
+    #mode: '0755'
+    #owner: "{{ architect_user }}"
+    #group: "{{ architect_user }}"
+
+
+      
+#- name: Copy stow.sh script to ~/scripts
+  #  tags: dotfiles
+  #ansible.builtin.copy:
+    #  src: scripts/stow.sh
+    #dest: "{{ architect_user_dir }}/scripts/stow.sh"
+    #mode: '0755'
+    #owner: "{{ architect_user }}"
+    #group: "{{ architect_user }}"
+
+- name: DOTFILES | architect_user | Delete existing files in the home directory
+  tags: dotfiles
+  file:
+    path: "{{ architect_user_dir }}/.bashrc"
+    state: absent
+
+#- name: Execute the stow.sh script
+  #  tags: dotfiles
+  #command: "{{ architect_user_dir }}/scripts/stow.sh"
+  #args:
+    #  chdir: "{{ architect_user_dir }}/scripts"
+  #environment:
+    #  HOME: "{{ architect_user_dir }}"
+- name: DOTFILES | architect_user | Symlinks für Dotfiles erstellen
+  tags: dotfiles
+  command: "stow -d {{ architect_user_dir }}/git/dotfiles-stow/ -t {{ architect_user_dir }}/ bashrc alacritty neofetch nvim tmux zsh"
+  args:
+    chdir: "{{ architect_user_dir }}/git/dotfiles-stow"
+

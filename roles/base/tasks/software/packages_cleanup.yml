@@ -1,7 +1,7 @@
 ---
 ######################################################
 #
-#     Base config Main
+#     NAME
 #
 ######################################################
 # README:
@@ -35,42 +35,37 @@
 #-----------------------------------------------------
 #   pre_tasks
 #
-- name: main | "load OS-spezific variables"
-  tags: base,vars
-  ansible.builtin.include_vars:
-    file: 
-      - "{{ ansible_distribution }}.yml"
-      - "all.yml"
 
 
 #-----------------------------------------------------
 #   Main
 #
+- name: system setup | package cleanup | remove unneeded packages (debian, ubuntu, etc)
+  tags: software,cleanup,packages,system,settings
+  package:
+    state: absent
+    name:
+      - cowsay
+      - exim4
+      - exim4-base
+      - exim4-config
+      - nano
+  when: ansible_distribution in ["Debian", "Pop!_OS", "Ubuntu"]
 
-- block:
-  #Erstellen von Usern
-  - import_tasks: users/architect_user.yml
-  - import_tasks: users/main_user.yml
-  - import_tasks: users/root.yml
 
-  # setup ansible environment
-  - import_tasks: ansible_setup.yml
-
-  # Install software
-  - import_tasks: software/packages_base.yml
-  - import_tasks: software/dotfiles_architect.yml
-  - import_tasks: software/packages_cleanup.yml
-
-  # Perform remaining import_tasks
-  - import_tasks: system-setup/clock.yml
-  - import_tasks: system-setup/cron.yml
-  - import_tasks: system-setup/locale.yml
-  - import_tasks: system-setup/logging.yml
-  - import_tasks: system-setup/openssh.yml
 #-----------------------------------------------------
 #   post_tasks
 #
 
+- name: Reboot 
+  tags: software,packages,system,settings
+  ansible.builtin.reboot:
+    msg: "Rebooting "
+    connect_timeout: 5
+    reboot_timeout: 600
+    pre_reboot_delay: 0
+    post_reboot_delay: 30
+  when: package_install.changed
 
 #-----------------------------------------------------
 #   Handlers

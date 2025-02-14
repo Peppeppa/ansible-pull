@@ -1,0 +1,122 @@
+---
+######################################################
+#
+#        Install Dotfiles from Github
+#
+######################################################
+# README:
+#     Downloads Dotfiles from Git to ~/git/{Reponame}
+#     Uses stow to symlink to ~/
+#
+#     use:  :%s/ to replace "architect_user" with the username
+#           fill in the variables in the set_fact section
+#
+
+#-----------------------------------------------------
+#   Header & variablen
+#
+- name: dotfiles | load variables 
+  tags: dotfiles_architect
+  set_fact:
+    user_dir: "{{ architect_user_dir }}"
+    user: "{{ architect_user }}" 
+    repo: "{{ main_user_dotfiles_repo }}"
+
+#-----------------------------------------------------
+#   DEBUG
+#
+#- name: dotfiles | DEBUG - show loaded variables
+#  tags: tag1,debug
+#  debug:
+#    msg: 
+#      - "{{ user_dir }}"
+#      - "{{ user }}"
+#      - "{{ repo }}"
+
+
+#-----------------------------------------------------
+#   pre_tasks
+#
+
+- name: dotfiles | architect_user | Ensure required packages are installed
+  tags: dotfiles_architect
+  ansible.builtin.package:
+    name:
+      - git
+      - stow
+    state: present
+
+- name: dotfiles | architect_user | Remove existing files before stowing
+  ansible.builtin.file:
+    path: "{{ user_dir }}/{{ item }}"
+    state: absent
+  with_items:
+    - .bashrc
+    - .alacritty
+    - .neofetch
+    - .nvim
+    - .tmux
+    - .zsh
+
+#-----------------------------------------------------
+#   Main
+#
+
+- name: dotfiles | architect_user | Create git directory in home folder
+  tags: dotfiles_architect
+  ansible.builtin.file:
+    path: "{{ user_dir }}/git"
+    state: directory
+    mode: '0755'
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- name: dotfiles | architect_user | Clone dotfiles repository
+  tags: dotfiles_architect
+  ansible.builtin.git:
+    repo: "{{ repo }}"
+    dest: '{{ user_dir }}/git/dotfiles-stow'
+    update: yes
+
+- name: dotfiles | architect_user | Setze Besitzer und Gruppe für das geklonte Repository
+  tags: dotfiles_architect
+  file:
+    path: '{{ user_dir }}/git/dotfiles-stow'
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    state: directory
+
+- name: dotfiles | architect_user | Setze Besitzer und Gruppe für das geklonte Repository
+  tags: dotfiles_architect
+  file:
+    path: '{{ user_dir }}/.config'
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    state: directory
+
+- name: dotfiles | architect_user | Symlinks für Dotfiles erstellen
+  tags: dotfiles_architect
+  command: "stow -d {{ user_dir }}/git/dotfiles-stow/ -t {{ user_dir }}/ bashrc alacritty neofetch nvim tmux zsh"
+  args:
+    chdir: "{{ user_dir }}/git/dotfiles-stow"
+
+
+#-----------------------------------------------------
+#   post_tasks
+#
+
+
+#-----------------------------------------------------
+#   Handlers
+#
+
+
+#-----------------------------------------------------
+#   roles
+#
+
+
+
+
+
+

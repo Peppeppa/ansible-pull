@@ -35,6 +35,14 @@
 #-----------------------------------------------------
 #   pre_tasks
 #
+
+- name: Update and upgrade package packages
+  tags: update
+  package:
+    update_cache: true
+    upgrade: dist
+  become_user: true
+
 - name: main | "load OS-spezific variables"
   tags: base,vars
   ansible.builtin.include_vars:

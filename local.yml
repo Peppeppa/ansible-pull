@@ -2,6 +2,7 @@
 - name: "Workstation Setup"
   hosts: localhost
   gather_facts: true
+  connection: local
   become: true
 
   vars_prompt:
@@ -14,8 +15,6 @@
       private: true
       encrypt: sha512_crypt
       confirm: true
-      
-
 
   roles:
     - base

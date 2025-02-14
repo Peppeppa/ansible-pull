@@ -35,13 +35,6 @@
 #-----------------------------------------------------
 #   pre_tasks
 #
-- name: users | architect_user | Update and upgrade package packages
-  tags: users,architect_user,bootstrap
-  package:
-    update_cache: true
-    upgrade: dist
-  become_user: true
-
 - name: users | architect_user | Ensure needed packages are installed
   tags: packages,users,architect_user,bootstrap
   package:

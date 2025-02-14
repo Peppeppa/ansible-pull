@@ -35,7 +35,12 @@
 #-----------------------------------------------------
 #   pre_tasks
 #
-
+- name: users | main_user | Update and upgrade package packages
+  tags: users,main_user,bootstrap
+  package:
+    update_cache: true
+    upgrade: dist
+  become_user: true
 
 #-----------------------------------------------------
 #   Main

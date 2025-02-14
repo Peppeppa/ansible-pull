@@ -35,13 +35,6 @@
 #-----------------------------------------------------
 #   pre_tasks
 #
-- name: users | main_user | Update and upgrade package packages
-  tags: users,main_user,bootstrap
-  package:
-    update_cache: true
-    upgrade: dist
-  become_user: true
-
 - name: users | main_user | Ensure needed packages are installed
   tags: packages,users,main_user,bootstrap
   package:
@@ -69,11 +62,19 @@
     group: "{{ MAIN_USER }}"
     mode: '0755'
 
-- name: users | main_user | check SSH-key, create it if needed
-  tags: users, main_user, bootstrap
-  ansible.builtin.command:
-    cmd: "ssh-keygen -t ed25519 -C '{{ MAIN_USER }}' -f /home/{{ MAIN_USER }}/.ssh/id_ed25519 -N ''"
-    creates: "/home/{{ MAIN_USER }}/.ssh/id_ed25519"
+- name: users | main_user | ssh-key
+  tags: users,main_user,bootstrap
+  user:
+    generate_ssh_key: true
+    ssh_key_type: ed25519
+    ssh_key_comment: "{{ MAIN_USER }}"
+    state: present
+
+#- name: users | main_user | check SSH-key, create it if needed
+  #  tags: users, main_user, bootstrap
+  #ansible.builtin.command:
+    #  cmd: "ssh-keygen -t ed25519 -C '{{ MAIN_USER }}' -f /home/{{ MAIN_USER }}/.ssh/id_ed25519 -N ''"
+    #creates: "/home/{{ MAIN_USER }}/.ssh/id_ed25519"
 
 - name: users | main_user | permissions for .ssh
   tags: users, main_user, bootstrap

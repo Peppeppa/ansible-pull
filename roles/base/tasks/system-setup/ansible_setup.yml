@@ -1,7 +1,7 @@
 ---
 ######################################################
 #
-#     NAME
+#     Ansible setup
 #
 ######################################################
 # README:
@@ -41,21 +41,20 @@
 #   Main
 #
 - name: ansible setup | ensure ansible is is the latest version
-  tags: ansible,ansible-setup
+  tags: packages,ansible,ansible-setup
   package:
     name: ansible
     state: latest
 
 - name: ansible setup | install required packages
-  tags: ansible,ansible-setup,packages
+  tags: packages,ansible,ansible-setup
   package:
     name:
-      - "{{ dconf_package }}"
-      - "{{ python_psutil_package }}"
-
+      - "{{ DCONF_PACKAGE }}"
+      - "{{ PYTHON_PSUTIL_PACKAGE }}"
 
 - name: ansible setup | install acl package
-  tags: ansible,ansible-setup,packages
+  tags: packages,ansible,ansible-setup
   package:
     name: acl
   when: ansible_distribution in ["Debian", "Pop!_OS", "Ubuntu"]
@@ -64,7 +63,7 @@
   tags: ansible,ansible-setup,
   file:
     path: /var/log/ansible.log
-    owner: "{{ architect_user }}"
+    owner: "{{ ARCHITECT_USER }}"
     group: ansible
     mode: 0664
     state: touch
@@ -84,15 +83,6 @@
   file: 
     path: /etc/ansible
     state: absent
-
-#- name: ansible setup | generate provision script from template
-  #  tags: ansible,ansible-setup,scripts
-  #template: 
-    #  src: provision.sh.j2
-    #dest: /usr/local/bin/provision
-    #owner: root
-    #group: root
-    #mode: 0755
 
 
 #-----------------------------------------------------

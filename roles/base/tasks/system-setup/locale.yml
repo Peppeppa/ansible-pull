@@ -42,7 +42,7 @@
 #   Main
 #
 - name: system setup | locale | install locale package
-  tags: package,locale,system-setup
+  tags: packages,locale,system-setup
   package:
     name: locales
     state: latest

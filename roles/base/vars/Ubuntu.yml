@@ -9,3 +9,5 @@ NFS_CLIENT_PACKAGE: nfs-common
 SFTP_PATH: /usr/lib/openssh/sftp-server
 DCONF_PACKAGE: dconf-cli
 PYTHON_PSUTIL_PACKAGE: python3-psutil
+GITHUB_CLI_PACKAGE: gh
+7ZIP_PACKAGE: p7zip-full

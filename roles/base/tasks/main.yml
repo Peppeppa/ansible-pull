@@ -62,12 +62,12 @@
   - import_tasks: users/root.yml
 
   # setup ansible environment
-  - import_tasks: ansible_setup.yml
+  - import_tasks: system-setup/ansible_setup.yml
 
   # Install software
   - import_tasks: software/packages_base.yml
-  - import_tasks: software/dotfiles_architect.yml
-  - import_tasks: software/packages_cleanup.yml
+  #  - import_tasks: software/dotfiles_architect.yml
+  #- import_tasks: software/packages_cleanup.yml
 
   # Perform remaining import_tasks
   - import_tasks: system-setup/clock.yml

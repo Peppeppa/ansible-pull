@@ -1,7 +1,7 @@
 ---
 ######################################################
 #
-#     NAME
+#    Root user config 
 #
 ######################################################
 # README:
@@ -41,6 +41,17 @@
 #   Main
 #
 
+- name: users | root | ensure account is locked
+  tags: root,users
+  user:
+    name: root
+    password_lock: yes
+
+- name: users | root | create group
+  tags: root,users
+  group:
+    name: ansible
+    state: present
 
 #-----------------------------------------------------
 #   post_tasks

@@ -1,7 +1,7 @@
 ---
 ######################################################
 #
-#     NAME
+#     Base config Main
 #
 ######################################################
 # README:
@@ -40,7 +40,10 @@
 #-----------------------------------------------------
 #   Main
 #
-
+- name: main | "load OS-spezific variables"
+  tags: base,vars
+  ansible.builtin.include_vars:
+    file: "{{ ansible_distribution }}.yml"
 
 #-----------------------------------------------------
 #   post_tasks

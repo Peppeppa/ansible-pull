@@ -1,11 +1,11 @@
 ---
 ######################################################
 #
-#    bootstrap architect user 
+#    bootstrap main user 
 #
 ######################################################
 # README:
-#     Architect user for Ansible use
+#     Main user for Ansible use
 #
 
 #-----------------------------------------------------
@@ -14,9 +14,9 @@
 #- name: task_name | load variables 
 #  tags: tag1,tag2
 #  set_fact:
-#    ARCHITECT_USER: 
+#    MAIN_USER: 
 #    SUDO_GROUP: 
-#    ARCHITECT_USER_PASSWD: "{{ beispiel_variable }}"
+#    MAIN_USER_PASSWD: "{{ beispiel_variable }}"
 #    var_4: 
 
 #-----------------------------------------------------
@@ -26,24 +26,24 @@
 #  tags: tag1,tag2,debug
 #  debug:
 #    msg: 
-#      - "{{ ARCHITECT_USER }}"
+#      - "{{ MAIN_USER }}"
 #      - "{{ SUDO_GROUP }}"
-#      - "{{ ARCHITECT_USER_PASSWD }}"
+#      - "{{ MAIN_USER_PASSWD }}"
 #      - "{{ var_4 }}"
 
 
 #-----------------------------------------------------
 #   pre_tasks
 #
-- name: users | architect_user | Update and upgrade package packages
-  tags: users,architect_user,bootstrap
+- name: users | main_user | Update and upgrade package packages
+  tags: users,main_user,bootstrap
   package:
     update_cache: true
     upgrade: dist
   become_user: true
 
-- name: users | architect_user | Ensure needed packages are installed
-  tags: packages,users,architect_user,bootstrap
+- name: users | main_user | Ensure needed packages are installed
+  tags: packages,users,main_user,bootstrap
   package:
     name: 
       - sudo
@@ -55,27 +55,27 @@
 #   Main
 #
 
-- name: users | architect_user | Create user 
-  tags: users,architect_user,bootstrap
+- name: users | main_user | Create user 
+  tags: users,main_user,bootstrap
   user:
-    name: "{{ ARCHITECT_USER }}"
-    password: "{{ ARCHITECT_USER_PASSWD | password_hash('sha512') }}"
-    comment: "Architect User"
+    name: "{{ MAIN_USER }}"
+    password: "{{ MAIN_USER_PASSWD | password_hash('sha512') }}"
+    comment: "Main User"
     shell: /bin/bash
-    groups: "{{ SUDO_GROUP }},{{ ARCHITECT_USER }}"
+    groups: "{{ SUDO_GROUP }},{{ MAIN_USER }}"
     create_home: true
     append: true
     generate_ssh_key: true
     ssh_key_type: ed25519
-    ssh_key_comment: "{{ ARCHITECT_USER }}"
+    ssh_key_comment: "{{ MAIN_USER }}"
     state: present
 
 
-- name: users | architect_user | "sudoers.d"
-  tags: users,architect_user,bootstrap
+- name: users | main_user | "sudoers.d"
+  tags: users,main_user,bootstrap
   ansible.builtin.lineinfile:
-    path: /etc/sudoers.d/{{ ARCHITECT_USER }}
-    line: "{{ ARCHITECT_USER }} ALL=(ALL) NOPASSWD: ALL"
+    path: /etc/sudoers.d/{{ MAIN_USER }}
+    line: "{{ MAIN_USER }} ALL=(ALL) NOPASSWD: ALL"
     create: true
     mode: '0440'
 

@@ -38,9 +38,12 @@
 - name: main | "load OS-spezific variables"
   tags: base,vars
   ansible.builtin.include_vars:
-    file: 
-      - "{{ ansible_distribution }}.yml"
-      - "all.yml"
+    file: "all.yml"
+
+- name: main | "load OS-spezific variables"
+  tags: base,vars
+  ansible.builtin.include_vars:
+    file: "{{ ansible_distribution }}.yml"
 
 - name: Update and upgrade package packages
   tags: update

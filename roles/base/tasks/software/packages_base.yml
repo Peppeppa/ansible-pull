@@ -86,6 +86,11 @@
       - bat
       - autojump
       - zip
+      - "{{ PYTHON_FLAKE_PACKAGE }}"
+      - "{{ PYTHONPACKAGE }}"
+      - "{{ PYTHON_PIP_PACKAGE }}"
+      - "{{ PYTHON_PYFLAKES_PACKAGE }}"
+      - "{{ PYTHON_VIRTUALENV_PACKAGE }}"
   register: package_install
 
 - name: system setup | utilities | install man-pages (arch)

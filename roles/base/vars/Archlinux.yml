@@ -11,3 +11,8 @@ DCONF_PACKAGE: dconf
 PYTHON_PSUTIL_PACKAGE: python-psutil
 GITHUB_CLI_PACKAGE: github-cli
 7ZIP_PACKAGE: p7zip
+PYTHON_FLAKE_PACKAGE: python-pyflakes
+PYTHONPACKAGE: python
+PYTHON_PIP_PACKAGE: python-pip
+PYTHON_PYFLAKES_PACKAGE: python-pyflakes
+PYTHON_VIRTUALENV_PACKAGE: python-virtualenv

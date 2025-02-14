@@ -39,7 +39,7 @@
   tags: users,main_user,bootstrap
   package:
     update_cache: true
-    upgrade: dist
+    upgrade: true
   become_user: true
 
 #-----------------------------------------------------

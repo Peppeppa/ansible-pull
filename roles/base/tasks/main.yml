@@ -49,7 +49,7 @@
   tags: update
   package:
     update_cache: true
-    upgrade: dist
+    upgrade: true
   become: true
 
 

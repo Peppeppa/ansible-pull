@@ -1,0 +1,22 @@
+---
+- name: "Workstation Setup"
+  hosts: localhost
+  gather_facts: true
+  become: true
+
+  vars_prompt:
+    - name: "ARCHITECT_USER"
+      prompt: "Gib den gewünschten Benutzernamen für den Ansible User ein"
+      private: false
+
+    - name: "ARCHITECT_USER_PASSWD"
+      prompt: "Gib das Passwort für {{ ARCHITECT_USER }} ein"
+      private: true
+      encrypt: sha512_crypt
+      confirm: true
+      
+
+
+  roles:
+    - base
+

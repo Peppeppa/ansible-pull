@@ -1,9 +1,8 @@
-openssh_package: openssh
-firewall_package: firewalld
-package_manager: pacman
-update_command: "pacman -Syu --noconfirm"
-openssh_service: sshd
-cron_package: cronie
-nfs_client_package: nfs-utils
-sudo_group: wheel
-nfs_client_package: nfs-utils
+OPENSSH_PACKAGE: openssh
+FIREWALL_PACKAGE: firewalld
+PACKAGE_MANAGER: pacman
+UPDATE_COMMAND: "pacman -Syu --noconfirm"
+OPENSSH_SERVICE: sshd
+CRON_PACKAGE: cronie
+SUDO_GROUP: wheel
+NFS_CLIENT_PACKAGE: nfs-utils

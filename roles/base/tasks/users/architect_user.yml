@@ -1,0 +1,97 @@
+---
+######################################################
+#
+#    bootstrap architect user 
+#
+######################################################
+# README:
+#     Architect user for Ansible use
+#
+
+#-----------------------------------------------------
+#   variablen
+#
+#- name: task_name | load variables 
+#  tags: tag1,tag2
+#  set_fact:
+#    ARCHITECT_USER: 
+#    SUDO_GROUP: 
+#    ARCHITECT_USER_PASSWD: "{{ beispiel_variable }}"
+#    var_4: 
+
+#-----------------------------------------------------
+#   DEBUG
+#
+#- name: task_name | DEBUG - show loaded variables
+#  tags: tag1,tag2,debug
+#  debug:
+#    msg: 
+#      - "{{ ARCHITECT_USER }}"
+#      - "{{ SUDO_GROUP }}"
+#      - "{{ ARCHITECT_USER_PASSWD }}"
+#      - "{{ var_4 }}"
+
+
+#-----------------------------------------------------
+#   pre_tasks
+#
+- name: users | architect_user | Update and upgrade package packages
+  tags: users,architect_user,bootstrap
+  package:
+    update_cache: true
+    upgrade: dist
+  become_user: true
+
+- name: users | architect_user | Ensure needed packages are installed
+  tags: users,architect_user,bootstrap
+  package:
+    name: 
+      - sudo
+      - "{{ OPENSSH_PACKAGE }}"
+    state: present
+  become_user: true
+
+#-----------------------------------------------------
+#   Main
+#
+
+- name: users | architect_user | Create user 
+  tags: users,architect_user,bootstrap
+  user:
+    name: "{{ ARCHITECT_USER }}"
+    password: "{{ ARCHITECT_USER_PASSWD | password_hash('sha512') }}"
+    comment: "Architect User"
+    shell: /bin/bash
+    groups: "{{ SUDO_GROUP }},{{ ARCHITECT_USER }}"
+    create_home: true
+    append: true
+    generate_ssh_key: true
+    ssh_key_type: ed25519
+    ssh_key_comment: "{{ ARCHITECT_USER }}"
+    state: present
+
+
+- name: users | architect_user | "sudoers.d"
+  tags: users,architect_user,bootstrap
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/{{ ANSIBLE_USER }}
+    line: "{{ ANSIBLE_USER }} ALL=(ALL) NOPASSWD: ALL"
+    create: true
+    mode: '0440'
+
+
+#-----------------------------------------------------
+#   post_tasks
+#
+
+
+#-----------------------------------------------------
+#   Handlers
+#
+
+
+#-----------------------------------------------------
+#   roles
+#
+
+

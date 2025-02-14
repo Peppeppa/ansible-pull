@@ -45,7 +45,7 @@
   tags: root,users
   user:
     name: root
-    password_lock: yes
+    password_lock: true
 
 - name: users | root | create group
   tags: root,users

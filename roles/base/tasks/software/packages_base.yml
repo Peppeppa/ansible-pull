@@ -40,7 +40,7 @@
   package:
     update_cache: true
     upgrade: true
-  become_user: true
+  become: true
 
 #-----------------------------------------------------
 #   Main
@@ -86,7 +86,6 @@
       - bat
       - autojump
       - zip
-
   register: package_install
 
 - name: system setup | utilities | install man-pages (arch)

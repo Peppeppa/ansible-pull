@@ -42,7 +42,7 @@
       - sudo
       - "{{ OPENSSH_PACKAGE }}"
     state: present
-  become_user: true
+  become: true
 
 #-----------------------------------------------------
 #   Main

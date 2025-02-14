@@ -42,7 +42,7 @@
       - sudo
       - "{{ OPENSSH_PACKAGE }}"
     state: present
-  become_user: true
+  become: true
 
 - name: users | main_user | get username
   tags: users,main_user,bootstrap

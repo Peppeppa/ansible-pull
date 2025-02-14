@@ -6,3 +6,4 @@ OPENSSH_SERVICE: sshd
 CRON_PACKAGE: cronie
 SUDO_GROUP: wheel
 NFS_CLIENT_PACKAGE: nfs-utils
+SFTP_PATH: /usr/lib/openssh/sftp-server

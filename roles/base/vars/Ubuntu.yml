@@ -6,3 +6,4 @@ OPENSSH_SERVICE: ssh
 CRON_PACKAGE: cron
 SUDO_GROUP: sudo
 NFS_CLIENT_PACKAGE: nfs-common
+SFTP_PATH: /usr/lib/openssh/sftp-server

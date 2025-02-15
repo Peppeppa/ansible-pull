@@ -82,7 +82,7 @@
       - stow
       - fzf
       - "{{ GITHUB_CLI_PACKAGE }}"
-      - "{{ 7ZIP_PACKAGE }}"
+      #- "{{ 7ZIP_PACKAGE }}"
       - bat
       - autojump
       - zip

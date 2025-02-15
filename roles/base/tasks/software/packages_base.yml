@@ -83,7 +83,6 @@
       - "{{ GITHUB_CLI_PACKAGE }}"
       #- "{{ 7ZIP_PACKAGE }}"
       - bat
-      - autojump
       - zip
       - "{{ PYTHON_FLAKE_PACKAGE }}"
       - "{{ PYTHONPACKAGE }}"

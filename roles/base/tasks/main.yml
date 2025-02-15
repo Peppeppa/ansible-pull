@@ -59,6 +59,11 @@
 #
 
 - block:
+  #Erstellen von Usern
+  - import_tasks: users/architect_user.yml
+  - import_tasks: users/main_user.yml
+  - import_tasks: users/root.yml
+
   # setup ansible environment
   - import_tasks: system-setup/ansible_setup.yml
 
@@ -72,10 +77,6 @@
   - import_tasks: system-setup/logging.yml
   - import_tasks: system-setup/ssh.yml
 
-  #Erstellen von Usern
-  - import_tasks: users/architect_user.yml
-  - import_tasks: users/main_user.yml
-  - import_tasks: users/root.yml
 
 
     #  - import_tasks: software/dotfiles_architect.yml

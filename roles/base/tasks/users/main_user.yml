@@ -11,10 +11,10 @@
 #-----------------------------------------------------
 #   variablen
 #
-#- name: task_name | load variables 
-#  tags: tag1,tag2
-#  set_fact:
-#    MAIN_USER: 
+- name: task_name | load variables 
+  tags: tag1,tag2
+  set_fact:
+    MAIN_USER: "{{ ansible_user }}"
 #    SUDO_GROUP: 
 #    MAIN_USER_PASSWD: "{{ beispiel_variable }}"
 #    var_4: 
@@ -22,11 +22,11 @@
 #-----------------------------------------------------
 #   DEBUG
 #
-#- name: task_name | DEBUG - show loaded variables
-#  tags: tag1,tag2,debug
-#  debug:
-#    msg: 
-#      - "{{ MAIN_USER }}"
+- name: task_name | DEBUG - show loaded variables
+  tags: tag1,tag2,debug
+  debug:
+    msg: 
+      - "{{ MAIN_USER }}"
 #      - "{{ SUDO_GROUP }}"
 #      - "{{ MAIN_USER_PASSWD }}"
 #      - "{{ var_4 }}"

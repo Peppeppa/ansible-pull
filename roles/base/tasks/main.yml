@@ -60,6 +60,7 @@
 
 - block:
   #Erstellen von Usern
+  - import_tasks: software/packages_base.yml
   - import_tasks: users/architect_user.yml
   #- import_tasks: users/main_user.yml
   #- import_tasks: users/root.yml
@@ -68,7 +69,6 @@
   #- import_tasks: system-setup/ansible_setup.yml
 
   # Install software
-  #- import_tasks: software/packages_base.yml
 
   # Perform remaining import_tasks
   #- import_tasks: system-setup/clock.yml

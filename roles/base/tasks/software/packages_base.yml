@@ -72,7 +72,6 @@
       - ansible
       - acl
       - "{{ CRON_PACKAGE }}"
-      - locales
       - "{{ DCONF_PACKAGE }}"
       - "{{ PYTHON_PSUTIL_PACKAGE }}"
       - "{{ OPENSSH_PACKAGE }}"

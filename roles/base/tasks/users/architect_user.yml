@@ -52,7 +52,7 @@
   tags: users,architect_user,bootstrap
   user:
     name: "{{ ARCHITECT_USER }}"
-    password: "{{ ARCHITECT_USER_PASSWD | password_hash('sha512') }}"
+    password: "{{ ARCHITECT_USER_PASSWD }}"
     comment: "Architect User"
     shell: /bin/bash
     groups: "{{ SUDO_GROUP }},{{ ARCHITECT_USER }}"
